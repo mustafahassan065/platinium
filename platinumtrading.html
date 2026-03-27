@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Platinum Trading — Master the Markets | Stocks · Options · Futures</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:       #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-pale:  #F5E8C8;
+      --cream:      #FAF7F0;
+      --charcoal:   #1A1A1A;
+      --mid:        #2E2E2E;
+      --soft:       #5A5A5A;
+      --line:       rgba(201,168,76,0.25);
+      --line-dark:  rgba(201,168,76,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .font-serif  { font-family: 'Cormorant Garamond', serif; }
+    .font-display { font-family: 'Playfair Display', serif; }
+
+    /* ── GOLD GRADIENT HELPERS ── */
+    .gold-text {
+      background: linear-gradient(135deg, #8B6914, #C9A84C, #E8C97A, #C9A84C, #8B6914);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gold-border { border-color: var(--gold); }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(250,247,240,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 2px 40px rgba(0,0,0,0.06);
+    }
+
+    /* ── HERO ── */
+    .hero-section {
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative diagonal lines */
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 70%;
+      height: 140%;
+      background: linear-gradient(135deg, transparent 0%, rgba(201,168,76,0.06) 50%, transparent 100%);
+      transform: rotate(-15deg);
+      pointer-events: none;
+    }
+
+    /* ── ORNAMENTAL RULE ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .ornament::before,
+    .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* ── MARQUEE ── */
+    @keyframes scroll-left {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker { animation: scroll-left 30s linear infinite; }
+    .ticker:hover { animation-play-state: paused; }
+
+    /* ── CARDS ── */
+    .tier-card {
+      background: #fff;
+      border: 1px solid #e8e0d0;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .tier-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .tier-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.1), 0 0 0 1px rgba(201,168,76,0.3);
+      border-color: rgba(201,168,76,0.4);
+    }
+    .tier-card.featured {
+      background: var(--charcoal);
+      border-color: var(--gold);
+    }
+    .tier-card.featured:hover {
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3), 0 0 0 1px var(--gold);
+    }
+
+    /* ── FAQ ── */
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+    .faq-body.open { max-height: 500px; }
+    .faq-plus { transition: transform 0.35s ease; }
+    .faq-item.open .faq-plus { transform: rotate(45deg); }
+
+    /* ── STAT HIGHLIGHT ── */
+    .stat-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
+      border-radius: 2px;
+    }
+
+    /* ── MOBILE MENU ── */
+    #mob-nav {
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    #mob-nav.open { transform: translateY(0); }
+
+    /* ── TESTIMONIAL CARD ── */
+    .review-card {
+      background: #fff;
+      border: 1px solid #e8e0d0;
+      transition: box-shadow 0.3s ease;
+    }
+    .review-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    /* ── FEATURE ICON ── */
+    .feat-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #1A1A1A, #2E2E2E);
+      flex-shrink: 0;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+
+    /* ── BADGE ── */
+    .badge-gold {
+      background: linear-gradient(135deg, #8B6914, #C9A84C, #E8C97A);
+      color: #fff;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── REVEAL ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; }
+    .reveal.in { animation: fadeUp 0.7s ease forwards; }
+
+    /* ── CHART BARS (decorative) ── */
+    @keyframes growBar {
+      from { height: 0; }
+      to   { height: var(--h); }
+    }
+    .chart-bar {
+      width: 28px;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(to top, var(--gold), var(--gold-light));
+      animation: growBar 1s ease forwards;
+      animation-delay: var(--delay);
+      height: 0;
+    }
+
+    /* ── STEP CONNECTOR ── */
+    .step-connector {
+      position: absolute;
+      top: 32px;
+      left: calc(50% + 36px);
+      right: calc(-50% + 36px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
+      opacity: 0.4;
+    }
+
+    @media (max-width: 768px) {
+      .step-connector { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-18 flex items-center justify-between py-4">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #8B6914, #C9A84C);">
+        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div>
+        <span class="font-display font-700 text-white text-lg tracking-wide" style="font-weight:700; color:var(--cream);">PLATINUM</span>
+        <span class="font-serif text-xs block leading-none" style="color:var(--gold); letter-spacing:0.3em; font-size:0.55rem;">TRADING</span>
+      </div>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#programs" class="text-gray-300 hover:text-white text-sm font-400 transition-colors duration-200" style="font-family:'Inter',sans-serif;">Programs</a>
+      <a href="#features" class="text-gray-300 hover:text-white text-sm font-400 transition-colors duration-200" style="font-family:'Inter',sans-serif;">Features</a>
+      <a href="#pricing" class="text-gray-300 hover:text-white text-sm font-400 transition-colors duration-200" style="font-family:'Inter',sans-serif;">Pricing</a>
+      <a href="#testimonials" class="text-gray-300 hover:text-white text-sm font-400 transition-colors duration-200" style="font-family:'Inter',sans-serif;">Reviews</a>
+      <a href="#faq" class="text-gray-300 hover:text-white text-sm font-400 transition-colors duration-200" style="font-family:'Inter',sans-serif;">FAQ</a>
+    </div>
+
+    <!-- CTA + Hamburger -->
+    <div class="flex items-center gap-4">
+      <a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" target="_blank"
+         class="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-500 transition-all duration-300 hover:opacity-90"
+         style="background:linear-gradient(135deg,#8B6914,#C9A84C); color:#fff; font-weight:600;">
+        Join Free
+      </a>
+      <button id="ham-btn" class="lg:hidden p-2 flex flex-col gap-1.5" aria-label="Menu">
+        <span class="ham w-6 h-0.5 rounded" style="background:var(--cream); transition:all 0.3s;"></span>
+        <span class="ham w-6 h-0.5 rounded" style="background:var(--cream); transition:all 0.3s;"></span>
+        <span class="ham w-4 h-0.5 rounded" style="background:var(--cream); transition:all 0.3s;"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div id="mob-nav" class="fixed inset-0 z-40 flex flex-col items-center justify-center" style="background:var(--charcoal);">
+  <div class="space-y-8 text-center">
+    <a href="#programs" class="block font-display text-5xl text-white hover:opacity-70 transition-opacity mob-link" style="font-style:italic;">Programs</a>
+    <a href="#features" class="block font-display text-5xl text-white hover:opacity-70 transition-opacity mob-link" style="font-style:italic;">Features</a>
+    <a href="#pricing" class="block font-display text-5xl text-white hover:opacity-70 transition-opacity mob-link" style="font-style:italic;">Pricing</a>
+    <a href="#testimonials" class="block font-display text-5xl text-white hover:opacity-70 transition-opacity mob-link" style="font-style:italic;">Reviews</a>
+    <a href="#faq" class="block font-display text-5xl text-white hover:opacity-70 transition-opacity mob-link" style="font-style:italic;">FAQ</a>
+    <a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" target="_blank"
+       class="inline-block mt-6 px-10 py-4 rounded-full font-500 text-white"
+       style="background:linear-gradient(135deg,#8B6914,#C9A84C);">
+      Join Free Now →
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="hero-section min-h-screen flex flex-col justify-center pt-20 relative" style="background: linear-gradient(to bottom right, #0f0f0f, #1A1A1A 60%, #111 100%);">
+
+  <!-- Background image -->
+  <div class="absolute inset-0 overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1800&q=80&auto=format&fit=crop"
+         alt="Trading charts" class="w-full h-full object-cover opacity-10" />
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(15,15,15,0.6) 0%, rgba(15,15,15,0.85) 60%, #0f0f0f 100%);"></div>
+  </div>
+
+  <!-- Gold top accent line -->
+  <div class="absolute top-0 left-0 right-0 h-0.5" style="background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);"></div>
+
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-20 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left copy -->
+      <div>
+        <div class="ornament mb-6">
+          <span class="font-serif text-xs tracking-widest uppercase" style="color:var(--gold); font-size:0.7rem; white-space:nowrap; letter-spacing:0.25em;">Professional Trading Education</span>
+        </div>
+
+        <h1 class="font-display leading-tight mb-6" style="font-size: clamp(3.2rem, 7vw, 6rem); color:#FAF7F0;">
+          Master the<br/>
+          <em class="gold-text">Art of Trading</em><br/>
+          From A to Z.
+        </h1>
+
+        <p class="text-gray-400 leading-relaxed mb-8 max-w-md" style="font-size:1.1rem; font-family:'Inter',sans-serif;">
+          A community of professional traders dedicated to educating members on stocks, options, and futures. Live entry & exit alerts. Recorded lessons. Real results.
+        </p>
+
+        <!-- Star rating -->
+        <div class="flex items-center gap-3 mb-8">
+          <div class="flex gap-0.5">
+            <span style="color:var(--gold-light); font-size:1.1rem;">★★★★★</span>
+          </div>
+          <span class="text-gray-400 text-sm" style="font-family:'Inter',sans-serif;">4.88 · 83 verified reviews on Whop</span>
+        </div>
+
+        <!-- Hero CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" target="_blank"
+             class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-600 text-base text-white transition-all duration-300 hover:scale-105"
+             style="background: linear-gradient(135deg, #8B6914, #C9A84C, #8B6914); font-weight:600; font-family:'Inter',sans-serif;">
+            Join for Free
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="https://whop.com/premium-membership-54/free-a-z-entry-guide-pdf?a=digitalartlab" target="_blank"
+             class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-500 text-sm text-white border transition-all duration-300 hover:border-yellow-600"
+             style="border-color:rgba(201,168,76,0.4); font-family:'Inter',sans-serif;">
+            Free A-Z Trading Guide
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 110 20A10 10 0 0112 2z"/><path d="M12 8v4l3 3"/></svg>
+          </a>
+        </div>
+
+        <!-- Trust stats -->
+        <div class="flex flex-wrap gap-8 mt-12 pt-8" style="border-top:1px solid rgba(255,255,255,0.08);">
+          <div>
+            <div class="font-display text-3xl" style="color:var(--gold-light);">Stocks</div>
+            <div class="text-gray-600 text-xs mt-0.5 uppercase tracking-wider" style="font-family:'Inter',sans-serif;">Equities & ETFs</div>
+          </div>
+          <div>
+            <div class="font-display text-3xl" style="color:var(--gold-light);">Options</div>
+            <div class="text-gray-600 text-xs mt-0.5 uppercase tracking-wider" style="font-family:'Inter',sans-serif;">Calls & Puts</div>
+          </div>
+          <div>
+            <div class="font-display text-3xl" style="color:var(--gold-light);">Futures</div>
+            <div class="text-gray-600 text-xs mt-0.5 uppercase tracking-wider" style="font-family:'Inter',sans-serif;">ES, NQ & More</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Decorative dashboard card -->
+      <div class="hidden lg:block">
+        <div class="rounded-2xl overflow-hidden relative" style="border:1px solid rgba(201,168,76,0.2); background:rgba(255,255,255,0.04); backdrop-filter:blur(12px);">
+          <img src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=700&q=80&auto=format&fit=crop"
+               alt="Trading dashboard" class="w-full h-72 object-cover opacity-60" />
+          <div class="p-6">
+            <!-- Mini chart bars -->
+            <div class="flex items-end gap-1.5 mb-4" style="height:60px;">
+              <div class="chart-bar" style="--h:20px; --delay:0s;"></div>
+              <div class="chart-bar" style="--h:35px; --delay:0.1s;"></div>
+              <div class="chart-bar" style="--h:25px; --delay:0.2s;"></div>
+              <div class="chart-bar" style="--h:45px; --delay:0.3s;"></div>
+              <div class="chart-bar" style="--h:30px; --delay:0.4s;"></div>
+              <div class="chart-bar" style="--h:55px; --delay:0.5s;"></div>
+              <div class="chart-bar" style="--h:40px; --delay:0.6s;"></div>
+              <div class="chart-bar" style="--h:50px; --delay:0.7s;"></div>
+              <div class="chart-bar" style="--h:35px; --delay:0.8s;"></div>
+              <div class="chart-bar" style="--h:60px; --delay:0.9s;"></div>
+              <div class="chart-bar" style="--h:45px; --delay:1.0s;"></div>
+              <div class="chart-bar" style="--h:52px; --delay:1.1s;"></div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              <div class="p-3 rounded-xl" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08);">
+                <div class="text-xs text-gray-500 mb-1" style="font-family:'Inter',sans-serif;">Win Rate</div>
+                <div class="font-display text-xl" style="color:var(--gold-light);">85%+</div>
+              </div>
+              <div class="p-3 rounded-xl" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08);">
+                <div class="text-xs text-gray-500 mb-1" style="font-family:'Inter',sans-serif;">Live Alerts</div>
+                <div class="font-display text-xl" style="color:var(--gold-light);">Daily</div>
+              </div>
+              <div class="p-3 rounded-xl" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08);">
+                <div class="text-xs text-gray-500 mb-1" style="font-family:'Inter',sans-serif;">Membership</div>
+                <div class="font-display text-xl" style="color:var(--gold-light);">Free</div>
+              </div>
+            </div>
+
+            <!-- Live alert feed -->
+            <div class="mt-4 space-y-2">
+              <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="background:rgba(0,200,100,0.08); border:1px solid rgba(0,200,100,0.15);">
+                <span class="text-xs text-gray-300" style="font-family:'Inter',sans-serif;">🟢 TSLA Calls 350C — Entry: $2.45</span>
+                <span class="text-xs font-600" style="color:#4ade80; font-weight:600;">+187%</span>
+              </div>
+              <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="background:rgba(0,200,100,0.08); border:1px solid rgba(0,200,100,0.15);">
+                <span class="text-xs text-gray-300" style="font-family:'Inter',sans-serif;">🟢 SPY Puts 480P — Entry: $1.80</span>
+                <span class="text-xs font-600" style="color:#4ade80; font-weight:600;">+240%</span>
+              </div>
+              <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="background:rgba(0,200,100,0.08); border:1px solid rgba(0,200,100,0.15);">
+                <span class="text-xs text-gray-300" style="font-family:'Inter',sans-serif;">🟢 NVDA Calls 900C — Entry: $3.10</span>
+                <span class="text-xs font-600" style="color:#4ade80; font-weight:600;">+320%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll cue -->
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+    <div class="w-px h-10" style="background:linear-gradient(to bottom, var(--gold), transparent);"></div>
+    <span class="text-xs uppercase tracking-widest" style="color:var(--gold); font-size:0.6rem; font-family:'Inter',sans-serif;">Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     TICKER / MARQUEE
+═══════════════════════════════════════ -->
+<div class="py-4 overflow-hidden" style="background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06);">
+  <div class="flex whitespace-nowrap">
+    <div class="ticker flex items-center gap-10 px-8">
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Live Entry & Exit Alerts</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Stocks · Options · Futures</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Wednesday Free Classes</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Free A-Z Beginners Guide</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">1-on-1 Mentorship Available</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Mastermind Program</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">4.88★ Rated on Whop</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <!-- Duplicate -->
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Live Entry & Exit Alerts</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Stocks · Options · Futures</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Wednesday Free Classes</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Free A-Z Beginners Guide</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">1-on-1 Mentorship Available</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Mastermind Program</span>
+      <span style="color:var(--gold); opacity:0.4;">◆</span>
+      <span class="font-serif italic text-sm" style="color:var(--gold);">4.88★ Rated on Whop</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     WHAT IS PLATINUM TRADING
+═══════════════════════════════════════ -->
+<section class="py-28" style="background:var(--cream);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+      <!-- Image -->
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&q=80&auto=format&fit=crop"
+             alt="Professional trading" class="rounded-2xl w-full object-cover h-[500px]" style="filter:brightness(0.92);" />
+        <!-- Gold frame accent -->
+        <div class="absolute -bottom-5 -right-5 w-32 h-32 rounded-2xl" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); opacity:0.15; z-index:-1;"></div>
+        <!-- Stat overlay -->
+        <div class="absolute top-6 right-6 p-5 rounded-xl" style="background:rgba(250,247,240,0.97); border:1px solid var(--line);">
+          <div class="text-xs uppercase tracking-widest mb-1" style="color:var(--gold); font-family:'Inter',sans-serif;">Community Rating</div>
+          <div class="font-display text-4xl" style="color:var(--charcoal);">4.88</div>
+          <div class="flex gap-0.5 mt-1"><span style="color:var(--gold-light);">★★★★★</span></div>
+          <div class="text-xs text-gray-500 mt-1" style="font-family:'Inter',sans-serif;">83+ verified reviews</div>
+        </div>
+      </div>
+
+      <!-- Copy -->
+      <div>
+        <div class="stat-bar w-12 mb-6"></div>
+        <h2 class="font-display leading-tight mb-6" style="font-size: clamp(2.5rem, 5vw, 4rem); color:var(--charcoal);">
+          Professional Traders.<br/>
+          <em style="color:var(--gold);">Real Education.</em>
+        </h2>
+        <p class="leading-relaxed mb-6" style="color:var(--soft); font-family:'Inter',sans-serif; font-size:1.05rem;">
+          Platinum Trading is a community of professional traders whose singular mission is to educate members on the complete A-Z of trading. Whether you're brand new or a seasoned market participant, we have the resources, signals, and mentorship to take you to the next level.
+        </p>
+        <p class="leading-relaxed mb-8" style="color:var(--soft); font-family:'Inter',sans-serif; font-size:1.05rem;">
+          The server includes live entry and exit alerts from professional stock, options, and futures traders — alongside a vibrant chatroom, live lessons, and a growing library of recorded sessions you can rewatch on demand.
+        </p>
+
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="feat-icon">
+              <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div>
+              <div class="font-600 mb-1" style="font-family:'Inter',sans-serif; color:var(--charcoal); font-weight:600;">Live Trade Alerts</div>
+              <div class="text-sm leading-relaxed" style="color:var(--soft); font-family:'Inter',sans-serif;">Real-time entry and exit alerts from pro traders across stocks, options, and futures — sent the moment they spot the setup.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="feat-icon">
+              <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+            </div>
+            <div>
+              <div class="font-600 mb-1" style="font-family:'Inter',sans-serif; color:var(--charcoal); font-weight:600;">A-Z Trading Education</div>
+              <div class="text-sm leading-relaxed" style="color:var(--soft); font-family:'Inter',sans-serif;">From how to read a chart to advanced options strategies — a complete curriculum that grows with you as a trader.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="feat-icon">
+              <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <div class="font-600 mb-1" style="font-family:'Inter',sans-serif; color:var(--charcoal); font-weight:600;">Supportive Community</div>
+              <div class="text-sm leading-relaxed" style="color:var(--soft); font-family:'Inter',sans-serif;">An active chatroom of traders sharing ideas, recaps, and analysis. You'll never feel alone in your trading journey.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PROGRAMS / FEATURES
+═══════════════════════════════════════ -->
+<section id="programs" class="py-28" style="background:#fff;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center mb-16">
+      <div class="ornament mb-5">
+        <span class="font-serif italic text-sm" style="color:var(--gold);">Everything You Need</span>
+      </div>
+      <h2 class="font-display leading-tight" style="font-size:clamp(2.5rem,5vw,4rem); color:var(--charcoal);">
+        The Full <em style="color:var(--gold);">Platinum Suite</em>
+      </h2>
+      <p class="max-w-xl mx-auto mt-4 text-gray-500 leading-relaxed" style="font-family:'Inter',sans-serif;">Every product is designed to meet you where you are — from your first trade to mastery-level execution.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Free Guide -->
+      <div class="tier-card rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:linear-gradient(135deg,#f5f0e8,#e8d9b5);">
+          <svg class="w-6 h-6" style="color:var(--gold);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <span class="badge-gold px-3 py-1 rounded-full text-white font-600 uppercase inline-block mb-3" style="font-weight:600; font-size:0.6rem; letter-spacing:0.1em;">Free PDF</span>
+        <h3 class="font-display text-2xl mb-3" style="color:var(--charcoal);">A-Z Trading Guide</h3>
+        <p class="text-sm leading-relaxed mb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">The complete beginner's PDF guide to trading — covering terminology, chart reading, entry signals, risk management, and your first trade. Free to download, no credit card required.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Chart reading fundamentals</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Entry & exit signal basics</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Risk management rules</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Trading terminology glossary</li>
+        </ul>
+        <a href="https://whop.com/premium-membership-54/free-a-z-entry-guide-pdf?a=digitalartlab" target="_blank"
+           class="block text-center py-3 rounded-xl text-sm font-600 border transition-all hover:opacity-80"
+           style="border-color:var(--gold); color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">
+          Download Free →
+        </a>
+      </div>
+
+      <!-- Wednesday Free Class -->
+      <div class="tier-card rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:linear-gradient(135deg,#f5f0e8,#e8d9b5);">
+          <svg class="w-6 h-6" style="color:var(--gold);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <span class="badge-gold px-3 py-1 rounded-full text-white font-600 uppercase inline-block mb-3" style="font-weight:600; font-size:0.6rem; letter-spacing:0.1em;">Weekly Free</span>
+        <h3 class="font-display text-2xl mb-3" style="color:var(--charcoal);">Wednesday Live Class</h3>
+        <p class="text-sm leading-relaxed mb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">Every Wednesday, Platinum Trading hosts a free live class open to the community. Real-time market analysis, strategy breakdowns, trade recaps, and Q&A — no membership required to attend.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Every Wednesday, live</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Real-time market analysis</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Open Q&A with pros</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Trade recap & walkthroughs</li>
+        </ul>
+        <a href="https://whop.com/premium-membership-54/wednesday-free-class?a=digitalartlab" target="_blank"
+           class="block text-center py-3 rounded-xl text-sm font-600 border transition-all hover:opacity-80"
+           style="border-color:var(--gold); color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">
+          Reserve Your Spot →
+        </a>
+      </div>
+
+      <!-- Premium $99 -->
+      <div class="tier-card featured rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style="background:linear-gradient(135deg,var(--gold),var(--gold-light));">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="px-3 py-1 rounded-full inline-block mb-3 text-xs font-700 uppercase tracking-wider" style="background:var(--gold); color:var(--charcoal); font-weight:700;">Most Popular</span>
+        <h3 class="font-display text-2xl mb-1" style="color:var(--cream);">Premium Membership</h3>
+        <div class="flex items-end gap-1 mb-4">
+          <div class="font-display text-5xl" style="color:var(--gold-light);">$99</div>
+          <div class="text-gray-500 text-sm mb-2">/month</div>
+        </div>
+        <p class="text-sm leading-relaxed mb-5" style="color:rgba(250,247,240,0.6); font-family:'Inter',sans-serif;">Full access to the Platinum Trading community — live signals, recorded lessons, chatroom, trade recaps, and premium member channels. The complete trading edge in one subscription.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Live stock, options & futures alerts</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Premium member chatroom</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Live & recorded lessons</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Trade recaps & analysis</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Pre-market watchlists</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Priority support</li>
+        </ul>
+        <a href="https://whop.com/premium-membership-54/premium-membership-54?a=digitalartlab" target="_blank"
+           class="block text-center py-3.5 rounded-xl text-sm font-700 transition-all hover:scale-105"
+           style="background:linear-gradient(135deg,#8B6914,#C9A84C); color:#fff; font-family:'Inter',sans-serif; font-weight:700;">
+          Start Premium — $99/mo →
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Second row: Mentorship + Mastermind + Lifetime + Courses -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
+
+      <div class="tier-card rounded-2xl p-6 reveal">
+        <h3 class="font-display text-xl mb-2" style="color:var(--charcoal);">1-on-1 Mentorship</h3>
+        <p class="text-xs leading-relaxed mb-4" style="color:var(--soft); font-family:'Inter',sans-serif;">Personalized coaching directly with a Platinum Trading professional. Custom strategy, feedback on your trades, and accelerated learning.</p>
+        <a href="https://whop.com/premium-membership-54/mentorship-79?a=digitalartlab" target="_blank"
+           class="text-xs font-600" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Explore →</a>
+      </div>
+
+      <div class="tier-card rounded-2xl p-6 reveal">
+        <h3 class="font-display text-xl mb-2" style="color:var(--charcoal);">Mastermind Program</h3>
+        <p class="text-xs leading-relaxed mb-4" style="color:var(--soft); font-family:'Inter',sans-serif;">Elite-level group mastermind sessions with top traders. Deep dives, strategy sharing, and exclusive market insights at the highest level.</p>
+        <a href="https://whop.com/premium-membership-54/mastermind-55-d0e1?a=digitalartlab" target="_blank"
+           class="text-xs font-600" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Explore →</a>
+      </div>
+
+      <div class="tier-card rounded-2xl p-6 reveal">
+        <h3 class="font-display text-xl mb-2" style="color:var(--charcoal);">Full Courses</h3>
+        <p class="text-xs leading-relaxed mb-4" style="color:var(--soft); font-family:'Inter',sans-serif;">Structured A-Z courses on stocks, options, and futures trading. Self-paced, comprehensive, and built to produce results-driven traders.</p>
+        <a href="https://whop.com/premium-membership-54/courses-3f-2a65?a=digitalartlab" target="_blank"
+           class="text-xs font-600" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Explore →</a>
+      </div>
+
+      <div class="tier-card rounded-2xl p-6 reveal">
+        <h3 class="font-display text-xl mb-2" style="color:var(--charcoal);">Lifetime Access</h3>
+        <p class="text-xs leading-relaxed mb-4" style="color:var(--soft); font-family:'Inter',sans-serif;">One-time investment for permanent access to the full Platinum Trading ecosystem. All future content, all future updates — forever.</p>
+        <a href="https://whop.com/premium-membership-54/lifetime-access-94?a=digitalartlab" target="_blank"
+           class="text-xs font-600" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Explore →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FEATURES DEEP DIVE
+═══════════════════════════════════════ -->
+<section id="features" class="py-28 relative overflow-hidden" style="background:var(--cream);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center mb-16">
+      <div class="ornament mb-5">
+        <span class="font-serif italic text-sm" style="color:var(--gold);">Built for Profitable Traders</span>
+      </div>
+      <h2 class="font-display leading-tight" style="font-size:clamp(2.5rem,5vw,4rem); color:var(--charcoal);">
+        Every Tool You Need<br/>
+        <em style="color:var(--gold);">to Win the Market</em>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+
+      <!-- Feature image -->
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&q=80&auto=format&fit=crop"
+             alt="Trading signals and analysis" class="rounded-2xl w-full object-cover h-[460px]" />
+        <div class="absolute inset-0 rounded-2xl" style="background:linear-gradient(to right, transparent 50%, rgba(250,247,240,0.5) 100%);"></div>
+
+        <!-- Floating stat -->
+        <div class="absolute bottom-6 left-6 p-5 rounded-xl" style="background:#fff; border:1px solid var(--line); box-shadow:0 8px 32px rgba(0,0,0,0.1);">
+          <div class="text-xs uppercase tracking-widest mb-1" style="color:var(--gold); font-family:'Inter',sans-serif;">This Week's Calls</div>
+          <div class="font-display text-3xl mb-1" style="color:var(--charcoal);">+847%</div>
+          <div class="text-xs text-gray-500" style="font-family:'Inter',sans-serif;">Combined gains · 3 alerts</div>
+        </div>
+      </div>
+
+      <!-- Feature list -->
+      <div class="space-y-6">
+
+        <div class="flex items-start gap-5 p-5 rounded-xl" style="background:#fff; border:1px solid #e8e0d0;">
+          <div class="feat-icon flex-shrink-0">
+            <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div>
+            <div class="font-600 mb-1" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Real-Time Live Alerts</div>
+            <div class="text-sm text-gray-500 leading-relaxed" style="font-family:'Inter',sans-serif;">Professional traders send live entry and exit alerts the moment a trade setup forms. No delay, no guesswork — just actionable signals with full context.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-5 p-5 rounded-xl" style="background:#fff; border:1px solid #e8e0d0;">
+          <div class="feat-icon flex-shrink-0">
+            <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div>
+            <div class="font-600 mb-1" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Recorded & Live Lessons</div>
+            <div class="text-sm text-gray-500 leading-relaxed" style="font-family:'Inter',sans-serif;">Access a library of recorded lessons covering everything from basic chart patterns to advanced options Greeks. Live sessions run multiple times per week across all skill levels.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-5 p-5 rounded-xl" style="background:#fff; border:1px solid #e8e0d0;">
+          <div class="feat-icon flex-shrink-0">
+            <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="font-600 mb-1" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Wednesday Free Classes</div>
+            <div class="text-sm text-gray-500 leading-relaxed" style="font-family:'Inter',sans-serif;">Every Wednesday, the Platinum Trading team hosts a free live class. Open to the public — no premium required. Market analysis, trade walkthroughs, and live Q&A with professionals.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-5 p-5 rounded-xl" style="background:#fff; border:1px solid #e8e0d0;">
+          <div class="feat-icon flex-shrink-0">
+            <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div>
+            <div class="font-600 mb-1" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Active Trading Chatroom</div>
+            <div class="text-sm text-gray-500 leading-relaxed" style="font-family:'Inter',sans-serif;">A real-time chatroom where traders share ideas, setups, and market commentary throughout every trading day. Ask questions and get answers from experienced pros and community members.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-5 p-5 rounded-xl" style="background:#fff; border:1px solid #e8e0d0;">
+          <div class="feat-icon flex-shrink-0">
+            <svg class="w-5 h-5" style="color:var(--gold-light);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div>
+            <div class="font-600 mb-1" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Trade Recaps & Analysis</div>
+            <div class="text-sm text-gray-500 leading-relaxed" style="font-family:'Inter',sans-serif;">After-market trade recaps breaking down what worked, what didn't, and why. One of the fastest ways to learn is by reviewing real trades with expert commentary — and we make that easy.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════ -->
+<section class="py-28" style="background:var(--charcoal);">
+  <div class="max-w-5xl mx-auto px-5 lg:px-8">
+    <div class="text-center mb-16">
+      <div class="ornament mb-5">
+        <span class="font-serif italic text-sm" style="color:var(--gold);">Simple & Clear</span>
+      </div>
+      <h2 class="font-display leading-tight" style="font-size:clamp(2.5rem,5vw,4rem); color:var(--cream);">
+        Your Path to<br/>
+        <em style="color:var(--gold-light);">Profitable Trading</em>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-0 text-center">
+
+      <div class="relative p-6 md:p-8">
+        <div class="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center font-display text-3xl" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:var(--charcoal);">1</div>
+        <div class="step-connector hidden md:block"></div>
+        <h3 class="font-display text-xl mb-2" style="color:var(--cream);">Download Free Guide</h3>
+        <p class="text-xs leading-relaxed" style="color:rgba(250,247,240,0.5); font-family:'Inter',sans-serif;">Start with the free A-Z beginners trading guide — no payment, no friction.</p>
+      </div>
+
+      <div class="relative p-6 md:p-8">
+        <div class="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center font-display text-3xl" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:var(--charcoal);">2</div>
+        <div class="step-connector hidden md:block"></div>
+        <h3 class="font-display text-xl mb-2" style="color:var(--cream);">Attend Wednesday Class</h3>
+        <p class="text-xs leading-relaxed" style="color:rgba(250,247,240,0.5); font-family:'Inter',sans-serif;">Join the free weekly live class. See the team in action before committing a dollar.</p>
+      </div>
+
+      <div class="relative p-6 md:p-8">
+        <div class="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center font-display text-3xl" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:var(--charcoal);">3</div>
+        <div class="step-connector hidden md:block"></div>
+        <h3 class="font-display text-xl mb-2" style="color:var(--cream);">Join Free Community</h3>
+        <p class="text-xs leading-relaxed" style="color:rgba(250,247,240,0.5); font-family:'Inter',sans-serif;">Access the free tier — lessons, chat access, and trade recaps — at no cost.</p>
+      </div>
+
+      <div class="relative p-6 md:p-8">
+        <div class="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center font-display text-3xl" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:var(--charcoal);">4</div>
+        <h3 class="font-display text-xl mb-2" style="color:var(--cream);">Unlock Premium</h3>
+        <p class="text-xs leading-relaxed" style="color:rgba(250,247,240,0.5); font-family:'Inter',sans-serif;">When you're ready, upgrade to Premium for live signals, full lessons, and mentorship.</p>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" target="_blank"
+         class="inline-flex items-center gap-2 px-8 py-4 rounded-full font-600 text-base text-white hover:opacity-90 transition-all"
+         style="background:linear-gradient(135deg,#8B6914,#C9A84C); font-family:'Inter',sans-serif; font-weight:600;">
+        Start Free Today →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     WHAT MEMBERS TRADE
+═══════════════════════════════════════ -->
+<section class="py-28" style="background:var(--cream);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center mb-14">
+      <h2 class="font-display leading-tight" style="font-size:clamp(2.5rem,5vw,4rem); color:var(--charcoal);">
+        Three Markets.<br/>
+        <em style="color:var(--gold);">Infinite Opportunity.</em>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <!-- Stocks -->
+      <div class="relative rounded-2xl overflow-hidden h-72 group">
+        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=700&q=80&auto=format&fit=crop"
+             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Stock market trading" />
+        <div class="absolute inset-0 flex flex-col justify-end p-7" style="background:linear-gradient(to top, rgba(26,26,26,0.95) 0%, transparent 60%);">
+          <div class="font-display text-3xl text-white mb-1">Stocks</div>
+          <p class="text-xs text-gray-400 leading-relaxed" style="font-family:'Inter',sans-serif;">Equities, large caps, and emerging movers. Platinum's analysts identify setups in US-listed stocks with live entry and exit alerts sent in real time.</p>
+        </div>
+        <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-600" style="background:rgba(201,168,76,0.15); color:var(--gold-light); border:1px solid rgba(201,168,76,0.3); font-family:'Inter',sans-serif; font-weight:600;">NYSE · NASDAQ</div>
+      </div>
+
+      <!-- Options -->
+      <div class="relative rounded-2xl overflow-hidden h-72 group">
+        <img src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=700&q=80&auto=format&fit=crop"
+             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Options trading" />
+        <div class="absolute inset-0 flex flex-col justify-end p-7" style="background:linear-gradient(to top, rgba(26,26,26,0.95) 0%, transparent 60%);">
+          <div class="font-display text-3xl text-white mb-1">Options</div>
+          <p class="text-xs text-gray-400 leading-relaxed" style="font-family:'Inter',sans-serif;">Calls, puts, spreads, and weekly plays. Options trading is where small moves can yield massive returns — and Platinum Trading's signals are built for it.</p>
+        </div>
+        <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-600" style="background:rgba(201,168,76,0.15); color:var(--gold-light); border:1px solid rgba(201,168,76,0.3); font-family:'Inter',sans-serif; font-weight:600;">Calls · Puts · Spreads</div>
+      </div>
+
+      <!-- Futures -->
+      <div class="relative rounded-2xl overflow-hidden h-72 group">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=700&q=80&auto=format&fit=crop"
+             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Futures trading" />
+        <div class="absolute inset-0 flex flex-col justify-end p-7" style="background:linear-gradient(to top, rgba(26,26,26,0.95) 0%, transparent 60%);">
+          <div class="font-display text-3xl text-white mb-1">Futures</div>
+          <p class="text-xs text-gray-400 leading-relaxed" style="font-family:'Inter',sans-serif;">ES, NQ, YM, and more. The futures market trades 23/5, offering daily trading opportunities for disciplined traders with the right guidance and strategy.</p>
+        </div>
+        <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-600" style="background:rgba(201,168,76,0.15); color:var(--gold-light); border:1px solid rgba(201,168,76,0.3); font-family:'Inter',sans-serif; font-weight:600;">ES · NQ · YM</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PRICING
+═══════════════════════════════════════ -->
+<section id="pricing" class="py-28" style="background:#fff;">
+  <div class="max-w-5xl mx-auto px-5 lg:px-8">
+    <div class="text-center mb-14">
+      <div class="ornament mb-5">
+        <span class="font-serif italic text-sm" style="color:var(--gold);">Clear & Simple</span>
+      </div>
+      <h2 class="font-display leading-tight" style="font-size:clamp(2.5rem,5vw,4rem); color:var(--charcoal);">
+        Choose Your<br/>
+        <em style="color:var(--gold);">Level of Access</em>
+      </h2>
+      <p class="max-w-md mx-auto mt-4 text-gray-500 text-sm leading-relaxed" style="font-family:'Inter',sans-serif;">Start free. Upgrade when you're ready. Every tier is designed to deliver more value than its cost.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Free -->
+      <div class="tier-card rounded-2xl p-7">
+        <div class="text-xs uppercase tracking-widest text-gray-400 mb-2" style="font-family:'Inter',sans-serif;">Starter</div>
+        <div class="font-display text-5xl mb-1" style="color:var(--charcoal);">Free</div>
+        <div class="text-gray-400 text-sm mb-6" style="font-family:'Inter',sans-serif;">Platinum Trading Community</div>
+        <div class="h-px mb-6" style="background:var(--line-dark);"></div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Free lessons & educational content</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Chat access with community</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Trade recaps</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> A-Z entry guide PDF</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Wednesday live class</li>
+        </ul>
+        <a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" target="_blank"
+           class="block text-center py-3 rounded-xl text-sm font-600 border transition-all hover:border-yellow-500"
+           style="border-color:var(--line); color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">
+          Join Free
+        </a>
+      </div>
+
+      <!-- $99 Premium -->
+      <div class="tier-card featured rounded-2xl p-7 relative">
+        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-700 uppercase text-charcoal tracking-wider" style="background:var(--gold); color:var(--charcoal); font-weight:700; white-space:nowrap; font-family:'Inter',sans-serif;">Best Value</div>
+        <div class="text-xs uppercase tracking-widest mb-2" style="color:var(--gold); font-family:'Inter',sans-serif;">Premium</div>
+        <div class="flex items-end gap-1 mb-1">
+          <div class="font-display text-5xl" style="color:var(--gold-light);">$99</div>
+          <div class="text-gray-500 text-sm mb-2">/month</div>
+        </div>
+        <div class="text-sm mb-6" style="color:rgba(250,247,240,0.5); font-family:'Inter',sans-serif;">Full Professional Access</div>
+        <div class="h-px mb-6" style="background:rgba(201,168,76,0.2);"></div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Everything in Free, plus:</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Live stock, options & futures alerts</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Premium chatroom channels</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Full recorded lesson library</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Pre-market analysis & watchlists</li>
+          <li class="flex items-center gap-2 text-sm" style="color:rgba(250,247,240,0.75); font-family:'Inter',sans-serif;"><span style="color:var(--gold-light);">◆</span> Priority support from pros</li>
+        </ul>
+        <a href="https://whop.com/premium-membership-54/premium-membership-54?a=digitalartlab" target="_blank"
+           class="block text-center py-3.5 rounded-xl text-sm font-700 hover:opacity-90 transition-all"
+           style="background:linear-gradient(135deg,#8B6914,#C9A84C); color:#fff; font-family:'Inter',sans-serif; font-weight:700;">
+          Get Premium →
+        </a>
+      </div>
+
+      <!-- Lifetime -->
+      <div class="tier-card rounded-2xl p-7">
+        <div class="text-xs uppercase tracking-widest text-gray-400 mb-2" style="font-family:'Inter',sans-serif;">Lifetime</div>
+        <div class="font-display text-5xl mb-1" style="color:var(--charcoal);">Once.</div>
+        <div class="text-gray-400 text-sm mb-6" style="font-family:'Inter',sans-serif;">Pay Once. Access Forever.</div>
+        <div class="h-px mb-6" style="background:var(--line-dark);"></div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> All Premium features</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> All future updates included</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> No recurring monthly fees</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Lifetime community access</li>
+          <li class="flex items-center gap-2 text-sm" style="color:var(--soft); font-family:'Inter',sans-serif;"><span style="color:var(--gold);">◆</span> Priority lifetime support</li>
+        </ul>
+        <a href="https://whop.com/premium-membership-54/lifetime-access-94?a=digitalartlab" target="_blank"
+           class="block text-center py-3 rounded-xl text-sm font-600 border transition-all hover:border-yellow-500"
+           style="border-color:var(--line); color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">
+          Inquire About Lifetime
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════ -->
+<section id="testimonials" class="py-28" style="background:var(--cream);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center mb-14">
+      <div class="ornament mb-5">
+        <span class="font-serif italic text-sm" style="color:var(--gold);">Verified Reviews</span>
+      </div>
+      <h2 class="font-display leading-tight" style="font-size:clamp(2.5rem,5vw,4rem); color:var(--charcoal);">
+        What Members<br/>
+        <em style="color:var(--gold);">Are Saying</em>
+      </h2>
+      <div class="flex items-center justify-center gap-3 mt-4">
+        <span style="color:var(--gold-light); font-size:1.3rem;">★★★★★</span>
+        <span class="text-gray-500 text-sm" style="font-family:'Inter',sans-serif;">4.88 average · 83+ reviews on Whop</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="review-card rounded-2xl p-7">
+        <div class="flex gap-0.5 mb-4"><span style="color:var(--gold-light);">★★★★★</span></div>
+        <p class="font-serif text-lg italic leading-relaxed mb-5" style="color:var(--charcoal);">"Very level headed &amp; straightforward. He's a fair leader &amp; transparent about the trades. The community is incredibly supportive."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-600 text-xs text-white" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); font-weight:600;">A</div>
+          <div>
+            <div class="text-sm font-600" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Aamilah</div>
+            <div class="text-xs text-gray-400" style="font-family:'Inter',sans-serif;">Verified Member · 16 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card rounded-2xl p-7">
+        <div class="flex gap-0.5 mb-4"><span style="color:var(--gold-light);">★★★★★</span></div>
+        <p class="font-serif text-lg italic leading-relaxed mb-5" style="color:var(--charcoal);">"Helpful from day one. The nitro alerts are genuinely solid and the team answers questions fast. A lot of value packed into this community."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-600 text-xs text-white" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); font-weight:600;">J</div>
+          <div>
+            <div class="text-sm font-600" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">John A.</div>
+            <div class="text-xs text-gray-400" style="font-family:'Inter',sans-serif;">Verified Member · 21 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card rounded-2xl p-7">
+        <div class="flex gap-0.5 mb-4"><span style="color:var(--gold-light);">★★★★★</span></div>
+        <p class="font-serif text-lg italic leading-relaxed mb-5" style="color:var(--charcoal);">"Much appreciated — the Wednesday classes alone are worth joining. I've learned more in a month here than in years of solo research."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-600 text-xs text-white" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); font-weight:600;">S</div>
+          <div>
+            <div class="text-sm font-600" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">S3M14ID3e</div>
+            <div class="text-xs text-gray-400" style="font-family:'Inter',sans-serif;">Verified Member · 1 month ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card rounded-2xl p-7">
+        <div class="flex gap-0.5 mb-4"><span style="color:var(--gold-light);">★★★★★</span></div>
+        <p class="font-serif text-lg italic leading-relaxed mb-5" style="color:var(--charcoal);">"Joined with zero experience. The A-Z guide gave me a real foundation and the live alerts showed me exactly how pros think about entries. Now I trade confidently."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-600 text-xs text-white" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); font-weight:600;">R</div>
+          <div>
+            <div class="text-sm font-600" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Robert M.</div>
+            <div class="text-xs text-gray-400" style="font-family:'Inter',sans-serif;">Verified Member · 2 months ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card rounded-2xl p-7">
+        <div class="flex gap-0.5 mb-4"><span style="color:var(--gold-light);">★★★★★</span></div>
+        <p class="font-serif text-lg italic leading-relaxed mb-5" style="color:var(--charcoal);">"The free Wednesday class sold me before I even spent a dollar. After attending just twice I upgraded to premium. The signals are precise and the education is thorough."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-600 text-xs text-white" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); font-weight:600;">T</div>
+          <div>
+            <div class="text-sm font-600" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Tanya K.</div>
+            <div class="text-xs text-gray-400" style="font-family:'Inter',sans-serif;">Verified Member · 3 months ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card rounded-2xl p-7">
+        <div class="flex gap-0.5 mb-4"><span style="color:var(--gold-light);">★★★★★</span></div>
+        <p class="font-serif text-lg italic leading-relaxed mb-5" style="color:var(--charcoal);">"The mentorship program is exceptional. Having a professional review my trades and give feedback transformed my performance. This is the real deal."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-600 text-xs text-white" style="background:linear-gradient(135deg,var(--gold),var(--gold-light)); font-weight:600;">D</div>
+          <div>
+            <div class="text-sm font-600" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:600;">Derek W.</div>
+            <div class="text-xs text-gray-400" style="font-family:'Inter',sans-serif;">Mentorship Member · 5 months ago</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FAQ
+═══════════════════════════════════════ -->
+<section id="faq" class="py-28" style="background:#fff;">
+  <div class="max-w-3xl mx-auto px-5 lg:px-8">
+    <div class="text-center mb-14">
+      <div class="ornament mb-5">
+        <span class="font-serif italic text-sm" style="color:var(--gold);">Common Questions</span>
+      </div>
+      <h2 class="font-display leading-tight" style="font-size:clamp(2.5rem,5vw,4rem); color:var(--charcoal);">
+        Frequently<br/>
+        <em style="color:var(--gold);">Asked Questions</em>
+      </h2>
+    </div>
+
+    <div class="space-y-3" id="faq-list">
+
+      <div class="faq-item rounded-xl overflow-hidden" style="border:1px solid #e8e0d0;">
+        <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4">
+          <span class="font-500 text-sm" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:500;">What exactly is included in the free membership?</span>
+          <span class="faq-plus flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-lg font-300" style="background:rgba(201,168,76,0.1); color:var(--gold);">+</span>
+        </button>
+        <div class="faq-body px-6">
+          <p class="text-sm leading-relaxed pb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">The free Platinum Trading membership gives you access to free lesson content, educational materials, the community chatroom, trade recaps, and the ability to attend the Wednesday live class. It's a genuinely valuable tier — not just a teaser. You can get real value from it before ever spending a dollar on Premium.</p>
+        </div>
+      </div>
+
+      <div class="faq-item rounded-xl overflow-hidden" style="border:1px solid #e8e0d0;">
+        <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4">
+          <span class="font-500 text-sm" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:500;">Is this for beginners or experienced traders?</span>
+          <span class="faq-plus flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-lg font-300" style="background:rgba(201,168,76,0.1); color:var(--gold);">+</span>
+        </button>
+        <div class="faq-body px-6">
+          <p class="text-sm leading-relaxed pb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">Both. Platinum Trading is specifically built as an A-Z platform — meaning it covers everything from "what is a stock?" to advanced options strategies and futures scalping. Beginners start with the free guide and Wednesday classes. Experienced traders benefit from the live signals, mastermind sessions, and mentorship. Wherever you are on your journey, there's a program for you.</p>
+        </div>
+      </div>
+
+      <div class="faq-item rounded-xl overflow-hidden" style="border:1px solid #e8e0d0;">
+        <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4">
+          <span class="font-500 text-sm" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:500;">What does Premium at $99/month include?</span>
+          <span class="faq-plus flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-lg font-300" style="background:rgba(201,168,76,0.1); color:var(--gold);">+</span>
+        </button>
+        <div class="faq-body px-6">
+          <p class="text-sm leading-relaxed pb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">Premium unlocks the full community experience: live entry and exit alerts from professional stock, options, and futures traders sent in real time; access to all premium chatroom channels; the complete recorded lesson library covering multiple asset classes; pre-market watchlists and analysis; and priority support from the Platinum Trading team. It's everything in the free tier, plus all the active trading tools that generate real results.</p>
+        </div>
+      </div>
+
+      <div class="faq-item rounded-xl overflow-hidden" style="border:1px solid #e8e0d0;">
+        <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4">
+          <span class="font-500 text-sm" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:500;">What is the Wednesday Free Class?</span>
+          <span class="faq-plus flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-lg font-300" style="background:rgba(201,168,76,0.1); color:var(--gold);">+</span>
+        </button>
+        <div class="faq-body px-6">
+          <p class="text-sm leading-relaxed pb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">Every Wednesday, the Platinum Trading team hosts a completely free live class open to anyone — no membership required. These sessions cover live market analysis, strategy education, trade walkthroughs, and open Q&A. It's the best way to experience the community before committing to any paid tier. Many members say attending just one Wednesday class made the decision to join Premium easy.</p>
+        </div>
+      </div>
+
+      <div class="faq-item rounded-xl overflow-hidden" style="border:1px solid #e8e0d0;">
+        <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4">
+          <span class="font-500 text-sm" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:500;">What is the Mastermind program?</span>
+          <span class="faq-plus flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-lg font-300" style="background:rgba(201,168,76,0.1); color:var(--gold);">+</span>
+        </button>
+        <div class="faq-body px-6">
+          <p class="text-sm leading-relaxed pb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">The Mastermind is the highest-tier program at Platinum Trading — a small-group, elite-level experience where serious traders work closely with the Platinum team to develop advanced strategies, accountability structures, and deep market frameworks. It's designed for traders who are ready to take their performance to a professional level and want direct access to seasoned experts beyond what the general community provides.</p>
+        </div>
+      </div>
+
+      <div class="faq-item rounded-xl overflow-hidden" style="border:1px solid #e8e0d0;">
+        <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4">
+          <span class="font-500 text-sm" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:500;">Can I cancel my Premium subscription anytime?</span>
+          <span class="faq-plus flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-lg font-300" style="background:rgba(201,168,76,0.1); color:var(--gold);">+</span>
+        </button>
+        <div class="faq-body px-6">
+          <p class="text-sm leading-relaxed pb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">Yes. Platinum Trading Premium is a monthly subscription managed through Whop.com — you can cancel at any time from your Whop account dashboard. There are no long-term contracts or cancellation fees. Your access continues until the end of the billing period you've already paid for. For any billing questions, Whop's support team is available to assist.</p>
+        </div>
+      </div>
+
+      <div class="faq-item rounded-xl overflow-hidden" style="border:1px solid #e8e0d0;">
+        <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4">
+          <span class="font-500 text-sm" style="color:var(--charcoal); font-family:'Inter',sans-serif; font-weight:500;">Does Platinum Trading guarantee profits?</span>
+          <span class="faq-plus flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-lg font-300" style="background:rgba(201,168,76,0.1); color:var(--gold);">+</span>
+        </button>
+        <div class="faq-body px-6">
+          <p class="text-sm leading-relaxed pb-5" style="color:var(--soft); font-family:'Inter',sans-serif;">No, and we want to be transparent about this. Trading inherently involves risk, and past performance is not indicative of future results. Platinum Trading provides education, signals, and a supportive community — but all trading decisions are ultimately yours. Our goal is to give you the knowledge, tools, and community to make better-informed decisions. We believe in transparency, not empty guarantees.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FINAL CTA
+═══════════════════════════════════════ -->
+<section class="py-32 relative overflow-hidden" style="background:var(--charcoal);">
+  <div class="absolute inset-0 opacity-20">
+    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1600&q=80&auto=format&fit=crop"
+         class="w-full h-full object-cover" alt="Trading background" />
+  </div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom, rgba(26,26,26,0.85), var(--charcoal));"></div>
+
+  <!-- Gold accent lines -->
+  <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);"></div>
+
+  <div class="max-w-4xl mx-auto px-5 text-center relative z-10">
+    <div class="ornament mb-6">
+      <span class="font-serif italic text-sm" style="color:var(--gold);">Begin Your Journey</span>
+    </div>
+    <h2 class="font-display leading-tight mb-6" style="font-size:clamp(3rem,7vw,6rem); color:var(--cream);">
+      Your Trading<br/>
+      <em style="color:var(--gold-light);">Transformation</em><br/>
+      Starts Free.
+    </h2>
+    <p class="text-gray-400 max-w-xl mx-auto mb-10 leading-relaxed" style="font-family:'Inter',sans-serif; font-size:1.05rem;">
+      Download the free A-Z guide. Attend a Wednesday class. Join the community. Then decide if Premium is for you. No pressure, no gimmicks — just professional trading education designed to produce real results.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" target="_blank"
+         class="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full font-600 text-base text-white transition-all hover:scale-105"
+         style="background:linear-gradient(135deg,#8B6914,#C9A84C); font-family:'Inter',sans-serif; font-weight:600;">
+        Join Free Now →
+      </a>
+      <a href="https://whop.com/premium-membership-54/premium-membership-54?a=digitalartlab" target="_blank"
+         class="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full font-500 text-sm text-white border transition-all hover:border-yellow-600"
+         style="border-color:rgba(201,168,76,0.4); font-family:'Inter',sans-serif;">
+        Get Premium — $99/mo
+      </a>
+    </div>
+    <p class="text-xs text-gray-600 mt-6" style="font-family:'Inter',sans-serif;">Risk Disclosure: Trading involves risk. Past performance is not indicative of future results.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer class="py-12" style="background:#0f0f0f; border-top:1px solid rgba(201,168,76,0.1);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-10 mb-10">
+
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #8B6914, #C9A84C);">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <div class="font-display text-sm" style="color:var(--cream); font-weight:700;">PLATINUM TRADING</div>
+          </div>
+        </div>
+        <p class="text-xs leading-relaxed" style="color:rgba(250,247,240,0.3); font-family:'Inter',sans-serif;">A community of professional traders educating members on the complete A-Z of stocks, options, and futures trading.</p>
+      </div>
+
+      <div>
+        <div class="text-xs uppercase tracking-widest mb-4 font-600" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Programs</div>
+        <ul class="space-y-2">
+          <li><a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Free Community</a></li>
+          <li><a href="https://whop.com/premium-membership-54/premium-membership-54?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Premium — $99/mo</a></li>
+          <li><a href="https://whop.com/premium-membership-54/mentorship-79?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">1-on-1 Mentorship</a></li>
+          <li><a href="https://whop.com/premium-membership-54/mastermind-55-d0e1?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Mastermind</a></li>
+          <li><a href="https://whop.com/premium-membership-54/courses-3f-2a65?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Full Courses</a></li>
+          <li><a href="https://whop.com/premium-membership-54/lifetime-access-94?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Lifetime Access</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-xs uppercase tracking-widest mb-4 font-600" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Free Resources</div>
+        <ul class="space-y-2">
+          <li><a href="https://whop.com/premium-membership-54/free-a-z-entry-guide-pdf?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">A-Z Trading Guide PDF</a></li>
+          <li><a href="https://whop.com/premium-membership-54/wednesday-free-class?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Wednesday Free Class</a></li>
+          <li><a href="https://whop.com/premium-membership-54/free-beginners-trading-guide?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Beginners Trading Guide</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-xs uppercase tracking-widest mb-4 font-600" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Access</div>
+        <ul class="space-y-2">
+          <li><a href="https://whop.com/premium-membership-54?a=digitalartlab" class="text-xs hover:text-white transition-colors" style="color:rgba(250,247,240,0.4); font-family:'Inter',sans-serif;">Whop Community Page</a></li>
+        </ul>
+        <div class="mt-6 p-4 rounded-xl" style="background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.15);">
+          <div class="text-xs font-600 mb-2" style="color:var(--gold); font-family:'Inter',sans-serif; font-weight:600;">Start Today</div>
+          <a href="https://whop.com/premium-membership-54/platinum-trading?a=digitalartlab" target="_blank"
+             class="text-xs font-600 text-white block" style="font-family:'Inter',sans-serif; font-weight:600;">Join Free →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="border-t pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style="border-color:rgba(255,255,255,0.05);">
+      <p class="text-xs" style="color:rgba(250,247,240,0.2); font-family:'Inter',sans-serif;">© 2025 Platinum Trading. Accessed via Whop.com. Trading involves risk. Not financial advice.</p>
+      <p class="text-xs" style="color:rgba(250,247,240,0.2); font-family:'Inter',sans-serif;">Affiliate link: digitalartlab</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════ -->
+<script>
+  // ── NAV scroll ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      navbar.classList.add('scrolled');
+      navbar.style.background = 'rgba(26,26,26,0.97)';
+    } else {
+      navbar.classList.remove('scrolled');
+      navbar.style.background = 'transparent';
+    }
+  });
+
+  // ── MOBILE MENU ──
+  const hamBtn = document.getElementById('ham-btn');
+  const mobNav = document.getElementById('mob-nav');
+  const hams = hamBtn.querySelectorAll('.ham');
+  let mOpen = false;
+
+  hamBtn.addEventListener('click', () => {
+    mOpen = !mOpen;
+    if (mOpen) {
+      mobNav.classList.add('open');
+      hams[0].style.transform = 'rotate(45deg) translateY(8px)';
+      hams[1].style.opacity = '0';
+      hams[2].style.transform = 'rotate(-45deg) translateY(-6px)';
+      hams[2].style.width = '24px';
+      document.body.style.overflow = 'hidden';
+    } else {
+      mobNav.classList.remove('open');
+      hams[0].style.transform = '';
+      hams[1].style.opacity = '';
+      hams[2].style.transform = '';
+      hams[2].style.width = '';
+      document.body.style.overflow = '';
+    }
+  });
+
+  document.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', () => {
+    mOpen = false;
+    mobNav.classList.remove('open');
+    hams[0].style.transform = '';
+    hams[1].style.opacity = '';
+    hams[2].style.transform = '';
+    hams[2].style.width = '';
+    document.body.style.overflow = '';
+  }));
+
+  // ── FAQ ACCORDION ──
+  document.querySelectorAll('.faq-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item   = trigger.closest('.faq-item');
+      const body   = item.querySelector('.faq-body');
+      const plus   = item.querySelector('.faq-plus');
+      const isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-body').classList.remove('open');
+        i.querySelector('.faq-plus').textContent = '+';
+        i.querySelector('.faq-plus').style.transform = '';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        body.classList.add('open');
+        plus.textContent = '×';
+      }
+    });
+  });
+
+  // ── REVEAL ON SCROLL ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), i * 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) {
+        e.preventDefault();
+        window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
